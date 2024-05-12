@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LibraryManagement.Models.ViewModels.BookViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add new Book</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Title, "Details", new {id = item.BookId})
+                @* @Html.DisplayFor(modelItem => item.Title) *@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @if(item.IsAvailable)
+                {
+                        @Html.ActionLink("Borrow", "Create", "BorrowHistories", new { id = item.BookId }, new { @class = "btn btn-primary" })
+                }
+                else
+                { 
+                        <a class="btn btn-danger" asp-area="" asp-controller="BorrowHistories" asp-action="Index" asp-route-id="@item.BorrowHistoryId">Unavailable</a>
+                }
+               @*  <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a> *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
